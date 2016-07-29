@@ -1,5 +1,5 @@
 {
-  "name": "bw-redux-mixpanel-middleware",
+  "name": "redux-mixpanel-middleware",
   "version": "1.0.0",
   "description": "Brandwatch friendly Redux Mixpanel Middleware",
   "main": "dist/index.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BrandwatchLtd/bw-redux-mixpanel-middleware.git"
+    "url": "git+https://github.com/BrandwatchLtd/redux-mixpanel-middleware.git"
   },
   "keywords": [
     "Redux.",
@@ -21,10 +21,11 @@
   ],
   "author": "Kamil Jopek",
   "license": "MIT",
+  "private": true,
   "bugs": {
-    "url": "https://github.com/BrandwatchLtd/bw-redux-mixpanel-middleware/issues"
+    "url": "https://github.com/BrandwatchLtd/redux-mixpanel-middleware/issues"
   },
-  "homepage": "https://github.com/BrandwatchLtd/bw-redux-mixpanel-middleware#readme",
+  "homepage": "https://github.com/BrandwatchLtd/redux-mixpanel-middleware#readme",
   "devDependencies": {
     "babel-cli": "6.11.4",
     "babel-core": "6.11.4",
