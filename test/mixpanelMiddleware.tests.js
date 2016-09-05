@@ -117,21 +117,19 @@ describe('mixpanelMiddleware', () => {
         assert(mixpanel.init.calledWith(mockToken));
     });
 
-    describe('middlware function', () => {
-        const store = { auth: {} };
-        let nextStub;
-        let middleware;
+    const store = { auth: {} };
+    let nextStub;
+    let middleware;
 
-        function runMiddleware(action) {
-            middleware({ getState: () => store })(nextStub)(action);
-            assert(nextStub.calledOnce);
-            assert(nextStub.calledWith(action));
-        }
+    function runMiddleware(action, middlewareOptions) {
+        nextStub = sandbox.stub();
+        middleware = mixpanelMiddleware(mockToken, {personSelector: selectors.getPerson, uniqueIdSelector: selectors.getUniqueId, ...middlewareOptions});
+        middleware({ getState: () => store })(nextStub)(action);
+        assert(nextStub.calledOnce);
+        assert(nextStub.calledWith(action));
+    }
 
-        beforeEach(() => {
-            nextStub = sandbox.stub();
-            middleware = mixpanelMiddleware(mockToken, selectors.getPerson, selectors.getUniqueId);
-        });
+    describe('middleware function', () => {
 
         it('does not attempt to track an action with no meta', () => {
             runMiddleware(nonMixpanelAction);
@@ -178,6 +176,38 @@ describe('mixpanelMiddleware', () => {
                     $last_name: mockUser.lastName,
                     $email: mockUser.username,
                 }));
+            });
+        });
+    });
+    
+    describe('middleware formatters', function() {
+        describe('action type', function() {
+            it('uses default identity formatter', function() {
+                runMiddleware(mixpanelActionWithProps);
+                assert.equal(mixpanel.track.firstCall.args[0], 'Action');
+            });
+            
+            it('formats the event type', function() {
+                runMiddleware(mixpanelActionWithProps, {actionTypeFormatter: value => `---${value}---`});
+                assert.equal(mixpanel.track.firstCall.args[0], '---Action---');
+            });
+        });
+        
+        describe('properties', function() {
+            it('uses default identity formatter', function() {
+                runMiddleware(mixpanelActionWithProps);
+                assert.equal(mixpanel.track.firstCall.args[1].foo, 'bar');
+            });
+            
+            it('formats all properties of payload', function() {
+                runMiddleware(mixpanelActionWithProps, {propertyFormatter: value => `===${value}===`});
+                assert.equal(mixpanel.track.firstCall.args[1]['===foo==='], 'bar');
+            });
+            
+            it('formats the increment name', function() {
+                runMiddleware(mixpanelActionWithIncrement, {propertyFormatter: value => `===${value}===`});
+                assert(mixpanel.people.increment.calledOnce);
+                assert(mixpanel.people.increment.calledWith('===login==='));
             });
         });
     });

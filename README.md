@@ -14,7 +14,7 @@ import mixpanelMiddleware from 'redux-mixpanel-middleware';
 
 import reducer from './your-reducers';
 
-let store = createStore(reducer, ['Initial State'], mixpanelMiddleware(token));
+let store = createStore(reducer, ['Initial State'], mixpanelMiddleware(token, /*options*/));
 ```
 
 This is very basic usage. You want to setup the Profiles for application in production.
@@ -31,7 +31,7 @@ Middlewares requires unique identifier of an user, which is just standard id. Pr
 ```js
 const uniqueIdSelector = state => state.me.id; // unique identifier
 const personSelector = state => state.me; // data passed down to mixpanel
-let store = createStore(reducer, ['Initial State'], mixpanelMiddleware(token, personSelector, uniqueIdSelector));
+let store = createStore(reducer, ['Initial State'], mixpanelMiddleware(token, {personSelector: personSelector, uniqueIdSelector: uniqueIdSelector}));
 ```
 
 ## Example example
@@ -68,6 +68,18 @@ function getPerson(state) {
 
 List of special properties
 https://mixpanel.com/help/questions/articles/special-or-reserved-properties
+
+# Humanize Action Type and properties
+
+Mixpanel recommmend to use human names for action types and properties. You can pass formatter functions to library for humanizing names. I recommend to use existing package for humanizing the names e.g. https://www.npmjs.com/package/humanize-string
+
+## Action Types
+
+`mixpanelMiddleware(token, {actionTypeFormatter: value => `---${value}---`});`
+
+## Properties and Increment name
+
+`mixpanelMiddleware(token, {propertyFormatter: value => `---${value}---`});`
 
 # Redux Actions
 
@@ -115,6 +127,12 @@ Until then, you need to wrap in condition. Mixpanel-browser package requires `wi
 
 
 Library mixpanel-node https://github.com/mixpanel/mixpanel-node could be used to make middleware universal.
+
+# Development
+
+`npm test`
+
+`npm run prepublish`
 
 # Credits
 Thanks to [Harry](https://twitter.com/hogg_io) and [Andy](https://twitter.com/andrew_polhill) for implementing the middleware! Kudos to them.
