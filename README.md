@@ -69,17 +69,23 @@ function getPerson(state) {
 List of special properties
 https://mixpanel.com/help/questions/articles/special-or-reserved-properties
 
-# Humanize Action Type and properties
+# Use human-friendly names
+
+> Developers implementing Mixpanel are sometimes tempted to use camel case, underscores, or obscure function names. We recommend choosing names that are easy to understand yet also convey the precise meaning for your Events. So for the example above, instead of calling the signup Event something like “newuser_su_done,” simply call it “Sign up complete” - that way, anyone looking at your project understand what action triggers that Event.
 
 Mixpanel recommmend to use human names for action types and properties. You can pass formatter functions to library for humanizing names. I recommend to use existing package for humanizing the names e.g. https://www.npmjs.com/package/humanize-string
 
 ## Action Types
 
-`mixpanelMiddleware(token, {actionTypeFormatter: value => `---${value}---`});`
+```
+mixpanelMiddleware(token, {actionTypeFormatter: value => `---${value}---`});
+```
 
 ## Properties and Increment name
 
-`mixpanelMiddleware(token, {propertyFormatter: value => `---${value}---`});`
+```
+mixpanelMiddleware(token, {propertyFormatter: value => `---${value}---`});
+```
 
 # Redux Actions
 
