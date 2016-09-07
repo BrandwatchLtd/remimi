@@ -28,16 +28,19 @@ var renameProperties = function renameProperties(object, formatter) {
 };
 
 function mixpanelMiddleware(token) {
-    var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-    var personSelector = _ref.personSelector;
-    var uniqueIdSelector = _ref.uniqueIdSelector;
-    var _ref$actionTypeFormat = _ref.actionTypeFormatter;
-    var actionTypeFormatter = _ref$actionTypeFormat === undefined ? identity : _ref$actionTypeFormat;
-    var _ref$propertyFormatte = _ref.propertyFormatter;
-    var propertyFormatter = _ref$propertyFormatte === undefined ? identity : _ref$propertyFormatte;
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
     _mixpanelBrowser2.default.init(token);
+
+    var personSelector = options.personSelector;
+    var uniqueIdSelector = options.uniqueIdSelector;
+    var _options$actionTypeFo = options.actionTypeFormatter;
+    var actionTypeFormatter = _options$actionTypeFo === undefined ? identity : _options$actionTypeFo;
+    var _options$propertyForm = options.propertyFormatter;
+    var propertyFormatter = _options$propertyForm === undefined ? identity : _options$propertyForm;
+    var _options$eventPrefix = options.eventPrefix;
+    var eventPrefix = _options$eventPrefix === undefined ? '' : _options$eventPrefix;
+
 
     return function (store) {
         return function (next) {
@@ -57,8 +60,8 @@ function mixpanelMiddleware(token) {
                     }
 
                     var data = (typeof mixpanelPayload === 'undefined' ? 'undefined' : _typeof(mixpanelPayload)) === 'object' ? mixpanelPayload : {};
-
-                    _mixpanelBrowser2.default.track(actionTypeFormatter(type), _extends({}, renameProperties(data, propertyFormatter)));
+                    var eventName = '' + eventPrefix + actionTypeFormatter(type);
+                    _mixpanelBrowser2.default.track(eventName, _extends({}, renameProperties(data, propertyFormatter)));
                 }
 
                 if (increment && increment.length > 0) {
