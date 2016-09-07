@@ -9,8 +9,16 @@ const renameProperties = (object, formatter) => {
     }, {})
 };
 
-export default function mixpanelMiddleware(token, { personSelector, uniqueIdSelector, actionTypeFormatter = identity, propertyFormatter = identity} = {}) {
+export default function mixpanelMiddleware(token, options = {}) {
     mixpanel.init(token);
+
+    const {
+        personSelector,
+        uniqueIdSelector,
+        actionTypeFormatter = identity,
+        propertyFormatter = identity,
+        eventPrefix = '',
+    } = options;
 
     return store => next => action => {
         const {
@@ -29,8 +37,8 @@ export default function mixpanelMiddleware(token, { personSelector, uniqueIdSele
             }
 
             const data = (typeof mixpanelPayload === 'object') ? mixpanelPayload : {};
-
-            mixpanel.track(actionTypeFormatter(type), {
+            const eventName = `${eventPrefix}${actionTypeFormatter(type)}`;
+            mixpanel.track(eventName, {
                 ...renameProperties(data, propertyFormatter),
             });
         }
