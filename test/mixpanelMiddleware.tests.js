@@ -221,7 +221,7 @@ describe('mixpanelMiddleware', () => {
 
             it('formats all properties of payload', function() {
                 runMiddleware(mixpanelActionWithProps, {propertyFormatter: value => `===${value}===`});
-                assert.equal(mixpanel.track.firstCall.args[1]['===foo==='], 'bar');
+                assert.equal(mixpanel.track.firstCall.args[1]['===foo==='], '===bar===');
             });
 
             it('formats the increment name', function() {

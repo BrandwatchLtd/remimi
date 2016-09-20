@@ -4,7 +4,7 @@ const identity = value => value;
 
 const renameProperties = (object, formatter) => {
     return Object.keys(object).reduce((memo, key) => {
-        memo[formatter(key)] = object[key];
+        memo[formatter(key)] = formatter(object[key]);
         return memo;
     }, {})
 };
