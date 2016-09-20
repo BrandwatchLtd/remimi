@@ -22,7 +22,7 @@ var identity = function identity(value) {
 
 var renameProperties = function renameProperties(object, formatter) {
     return Object.keys(object).reduce(function (memo, key) {
-        memo[formatter(key)] = object[key];
+        memo[formatter(key)] = formatter(object[key]);
         return memo;
     }, {});
 };
@@ -48,11 +48,14 @@ function mixpanelMiddleware(token) {
                 var type = action.type;
                 var _action$meta = action.meta;
                 _action$meta = _action$meta === undefined ? {} : _action$meta;
-                var mixpanelPayload = _action$meta.mixpanel;
-                var increment = _action$meta.mixpanelIncrement;
+                var _action$meta$mixpanel = _action$meta.mixpanel;
+                _action$meta$mixpanel = _action$meta$mixpanel === undefined ? {} : _action$meta$mixpanel;
+                var eventName = _action$meta$mixpanel.eventName;
+                var mixpanelPayload = _action$meta$mixpanel.props;
+                var increment = _action$meta$mixpanel.increment;
 
 
-                if (mixpanelPayload) {
+                if (eventName) {
                     if (personSelector && uniqueIdSelector) {
                         var person = personSelector(store.getState());
                         _mixpanelBrowser2.default.identify(uniqueIdSelector(store.getState()));
@@ -60,8 +63,9 @@ function mixpanelMiddleware(token) {
                     }
 
                     var data = (typeof mixpanelPayload === 'undefined' ? 'undefined' : _typeof(mixpanelPayload)) === 'object' ? mixpanelPayload : {};
-                    var eventName = '' + eventPrefix + actionTypeFormatter(type);
-                    _mixpanelBrowser2.default.track(eventName, _extends({}, renameProperties(data, propertyFormatter)));
+                    _mixpanelBrowser2.default.track('' + eventPrefix + actionTypeFormatter(eventName), _extends({}, renameProperties(data, propertyFormatter), {
+                        action: actionTypeFormatter(type)
+                    }));
                 }
 
                 if (increment && increment.length > 0) {
