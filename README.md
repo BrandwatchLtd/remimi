@@ -1,6 +1,6 @@
 # redux-mixpanel-middleware
 
-Advanced Client Redux Mixpanel Middleware. 
+Advanced Client Redux Mixpanel Middleware.
 
 # Installation
 
@@ -84,13 +84,13 @@ mixpanelMiddleware(token, {actionTypeFormatter: value => `---${value}---`}); // 
 ## Properties and Increment name
 
 ```
-mixpanelMiddleware(token, {propertyFormatter: value => `---${value}---`}); // mixpanel custom properties will look like '---Action---' 
+mixpanelMiddleware(token, {propertyFormatter: value => `---${value}---`}); // mixpanel custom properties will look like '---Action---'
 ```
 
 ## Prefix event name
 
-Redux action types might be too generic and you might want to prefix name with the scope of the project. 
-  
+Redux action types might be too generic and you might want to prefix name with the scope of the project.
+
 ```
 mixpanelMiddleware(token, {eventPrefix: 'Batman - '}); // event will look 'Batman - Action'
 ```  
@@ -105,7 +105,10 @@ const action = {
     type: 'Login',
     meta: {
         mixpanel: {
-            source: 'website',
+            eventName: 'Some event',
+            props: {
+                source: 'website',
+            },
         },
     },
 }
@@ -120,7 +123,10 @@ const action = {
 const action = {
    type: 'Login',
    meta: {
-       mixpanelIncrement: ['login'],
+     mixpanel: {
+         eventName: 'Some event',
+         increment: ['login'],
+     },
    },
 }
 ```

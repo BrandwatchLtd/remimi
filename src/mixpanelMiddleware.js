@@ -24,12 +24,15 @@ export default function mixpanelMiddleware(token, options = {}) {
         const {
             type,
             meta: {
-                mixpanel: mixpanelPayload,
-                mixpanelIncrement: increment,
+                mixpanel: {
+                  eventName: eventName,
+                  props: mixpanelPayload,
+                  increment: increment,
+                } = {},
             } = {},
         } = action;
 
-        if (mixpanelPayload) {
+        if (eventName) {
             if (personSelector && uniqueIdSelector) {
                 const person = personSelector(store.getState());
                 mixpanel.identify(uniqueIdSelector(store.getState()));
@@ -37,9 +40,9 @@ export default function mixpanelMiddleware(token, options = {}) {
             }
 
             const data = (typeof mixpanelPayload === 'object') ? mixpanelPayload : {};
-            const eventName = `${eventPrefix}${actionTypeFormatter(type)}`;
-            mixpanel.track(eventName, {
+            mixpanel.track(`${eventPrefix}${actionTypeFormatter(eventName)}`, {
                 ...renameProperties(data, propertyFormatter),
+                action: actionTypeFormatter(type),
             });
         }
 

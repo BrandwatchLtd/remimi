@@ -60,7 +60,9 @@ describe('mixpanelMiddleware', () => {
     const mixpanelActionWithoutProps = {
         type: 'Action',
         meta: {
-            mixpanel: true,
+            mixpanel: {
+              eventName: 'fooEvent',
+            },
         },
     };
 
@@ -68,7 +70,10 @@ describe('mixpanelMiddleware', () => {
         type: 'Action',
         meta: {
             mixpanel: {
-                foo: 'bar',
+                eventName: 'fooEvent',
+                props: {
+                  foo: 'bar',
+                },
             },
         },
     };
@@ -77,9 +82,12 @@ describe('mixpanelMiddleware', () => {
         type: 'Action',
         meta: {
             mixpanel: {
+              eventName: 'fooEvent',
+              props: {
                 foo: 'bar',
+              },
+              increment: ['login'],
             },
-            mixpanelIncrement: ['login'],
         },
     };
 
@@ -141,23 +149,28 @@ describe('mixpanelMiddleware', () => {
             assert(mixpanel.track.notCalled);
         });
 
-        it('tracks an action with a mixpanel event without props', () => {
+        it('tracks a mixpanel event with the given event name', () => {
             runMiddleware(mixpanelActionWithoutProps);
             assert(mixpanel.track.calledOnce);
-            assert.equal(mixpanel.track.firstCall.args[0], mixpanelActionWithoutProps.type);
+            assert.equal(mixpanel.track.firstCall.args[0], mixpanelActionWithoutProps.meta.mixpanel.eventName);
+        });
+
+        it('tracks a mixpanel event with the action name as action property', () => {
+            runMiddleware(mixpanelActionWithoutProps);
+            assert(mixpanel.track.calledOnce);
+            assert.equal(mixpanel.track.firstCall.args[1].action, mixpanelActionWithoutProps.type);
         });
 
         it('tracks an action with a mixpanel event with props', () => {
             runMiddleware(mixpanelActionWithProps);
             assert(mixpanel.track.calledOnce);
-            assert.equal(mixpanel.track.firstCall.args[0], mixpanelActionWithProps.type);
-            assert.equal(mixpanel.track.firstCall.args[1].foo, mixpanelActionWithProps.meta.mixpanel.foo);
+            assert.equal(mixpanel.track.firstCall.args[1].foo, mixpanelActionWithProps.meta.mixpanel.props.foo);
         });
 
         it('tracks an increment event with the provided values ', () => {
             runMiddleware(mixpanelActionWithIncrement);
             assert(mixpanel.people.increment.calledOnce);
-            assert(mixpanel.people.increment.calledWith(mixpanelActionWithIncrement.meta.mixpanelIncrement));
+            assert(mixpanel.people.increment.calledWith(mixpanelActionWithIncrement.meta.mixpanel.increment));
         });
 
         describe('with user data', () => {
@@ -183,34 +196,34 @@ describe('mixpanelMiddleware', () => {
     describe('prefix event', () => {
         it('uses default identity formatter', function() {
             runMiddleware(mixpanelActionWithProps, {eventPrefix: 'Batman - '});
-            assert.equal(mixpanel.track.firstCall.args[0], 'Batman - Action');
+            assert.equal(mixpanel.track.firstCall.args[0], 'Batman - fooEvent');
         });
     });
-    
+
     describe('middleware formatters', function() {
         describe('action type', function() {
             it('uses default identity formatter', function() {
                 runMiddleware(mixpanelActionWithProps);
-                assert.equal(mixpanel.track.firstCall.args[0], 'Action');
+                assert.equal(mixpanel.track.firstCall.args[0], 'fooEvent');
             });
-            
+
             it('formats the event type', function() {
                 runMiddleware(mixpanelActionWithProps, {actionTypeFormatter: value => `---${value}---`});
-                assert.equal(mixpanel.track.firstCall.args[0], '---Action---');
+                assert.equal(mixpanel.track.firstCall.args[0], '---fooEvent---');
             });
         });
-        
+
         describe('properties', function() {
             it('uses default identity formatter', function() {
                 runMiddleware(mixpanelActionWithProps);
                 assert.equal(mixpanel.track.firstCall.args[1].foo, 'bar');
             });
-            
+
             it('formats all properties of payload', function() {
                 runMiddleware(mixpanelActionWithProps, {propertyFormatter: value => `===${value}===`});
                 assert.equal(mixpanel.track.firstCall.args[1]['===foo==='], 'bar');
             });
-            
+
             it('formats the increment name', function() {
                 runMiddleware(mixpanelActionWithIncrement, {propertyFormatter: value => `===${value}===`});
                 assert(mixpanel.people.increment.calledOnce);
