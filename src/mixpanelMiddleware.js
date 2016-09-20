@@ -4,7 +4,7 @@ const identity = value => value;
 
 const renameProperties = (object, formatter) => {
     return Object.keys(object).reduce((memo, key) => {
-        memo[formatter(key)] = object[key];
+        memo[formatter(key)] = formatter(object[key]);
         return memo;
     }, {})
 };
@@ -24,12 +24,15 @@ export default function mixpanelMiddleware(token, options = {}) {
         const {
             type,
             meta: {
-                mixpanel: mixpanelPayload,
-                mixpanelIncrement: increment,
+                mixpanel: {
+                  eventName: eventName,
+                  props: mixpanelPayload,
+                  increment: increment,
+                } = {},
             } = {},
         } = action;
 
-        if (mixpanelPayload) {
+        if (eventName) {
             if (personSelector && uniqueIdSelector) {
                 const person = personSelector(store.getState());
                 mixpanel.identify(uniqueIdSelector(store.getState()));
@@ -37,9 +40,9 @@ export default function mixpanelMiddleware(token, options = {}) {
             }
 
             const data = (typeof mixpanelPayload === 'object') ? mixpanelPayload : {};
-            const eventName = `${eventPrefix}${actionTypeFormatter(type)}`;
-            mixpanel.track(eventName, {
+            mixpanel.track(`${eventPrefix}${actionTypeFormatter(eventName)}`, {
                 ...renameProperties(data, propertyFormatter),
+                action: actionTypeFormatter(type),
             });
         }
 
