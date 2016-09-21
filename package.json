@@ -21,7 +21,7 @@
   ],
   "author": "Kamil Jopek",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "bugs": {
     "url": "https://github.com/BrandwatchLtd/remimi/issues"
   },
