@@ -1,10 +1,10 @@
-# redux-mixpanel-middleware
+# remimi - Redux Mixpanel Middleware
 
 Advanced Client Redux Mixpanel Middleware.
 
 # Installation
 
-`npm install --save git+ssh@github.com:BrandwatchLtd/redux-mixpanel-middleware.git`
+`npm install --save remimi`
 
 # Basic Configuration
 
@@ -154,5 +154,11 @@ Library mixpanel-node https://github.com/mixpanel/mixpanel-node could be used to
 
 `npm run prepublish`
 
+## Contributions
+
+Contributions are very appreciated and welcome. We promise you a prompt response. Feel free to drop message to [kamil](https://twitter.com/kkamilio) if you have any questions.
+
 # Credits
 Thanks to [Harry](https://twitter.com/hogg_io) and [Andy](https://twitter.com/andrew_polhill) for implementing the middleware! Kudos to them.
+
+:heart: :heart:  :heart: [Brandwatch](https://www.brandwatch.com/careers/) is looking for talented engineers in Brighton, Berlin and __Stuttgart__. :heart: :heart: :heart:  
