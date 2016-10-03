@@ -12,7 +12,7 @@ Advanced Client Redux Mixpanel Middleware.
 
 ```js
 import { createStore } from 'redux';
-import mixpanelMiddleware from 'redux-mixpanel-middleware';
+import mixpanelMiddleware from 'remimi';
 
 import reducer from './your-reducers';
 
@@ -33,7 +33,14 @@ Middlewares requires unique identifier of an user, which is just standard id. Pr
 ```js
 const uniqueIdSelector = state => state.me.id; // unique identifier
 const personSelector = state => state.me; // data passed down to mixpanel
-let store = createStore(reducer, ['Initial State'], mixpanelMiddleware(token, {personSelector: personSelector, uniqueIdSelector: uniqueIdSelector}));
+let store = createStore(
+  reducer, 
+  ['Initial State'], 
+  mixpanelMiddleware(token, { 
+    personSelector: personSelector, 
+    uniqueIdSelector: uniqueIdSelectorm
+  })
+);
 ```
 
 ## Example example
@@ -143,7 +150,7 @@ Until then, you need to wrap in condition. Mixpanel-browser package requires `wi
 ```js
   const middlewares = [];
   if (__CLIENT__) {
-    middlewares.push(require('./mixpanelMiddleware').default(token, personSelector, idSelector));
+    middlewares.push(require('remimi').default(token, { personSelector, idSelector }));
   }
 ```
 
@@ -153,8 +160,6 @@ Library mixpanel-node https://github.com/mixpanel/mixpanel-node could be used to
 # Development
 
 `npm test`
-
-`npm run prepublish`
 
 ## Contributions
 
