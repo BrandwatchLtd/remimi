@@ -1,5 +1,7 @@
 # remimi - Redux Mixpanel Middleware
 
+[![Build Status](https://travis-ci.org/BrandwatchLtd/remimi.svg?branch=master)](https://travis-ci.org/BrandwatchLtd/remimi)
+
 Advanced Client Redux Mixpanel Middleware.
 
 # Installation
