@@ -25,9 +25,10 @@ export default function mixpanelMiddleware(token, options = {}) {
             type,
             meta: {
                 mixpanel: {
-                  eventName: eventName,
-                  props: mixpanelPayload,
-                  increment: increment,
+                    type: customType,
+                    eventName: eventName,
+                    props: mixpanelPayload,
+                    increment: increment,
                 } = {},
             } = {},
         } = action;
@@ -42,7 +43,7 @@ export default function mixpanelMiddleware(token, options = {}) {
             const data = (typeof mixpanelPayload === 'object') ? mixpanelPayload : {};
             mixpanel.track(`${eventPrefix}${actionTypeFormatter(eventName)}`, {
                 ...renameProperties(data, propertyFormatter),
-                action: actionTypeFormatter(type),
+                action: actionTypeFormatter(customType || type),
             });
         }
 

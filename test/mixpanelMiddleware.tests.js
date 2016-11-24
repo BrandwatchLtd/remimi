@@ -61,7 +61,7 @@ describe('mixpanelMiddleware', () => {
         type: 'Action',
         meta: {
             mixpanel: {
-              eventName: 'fooEvent',
+                eventName: 'fooEvent',
             },
         },
     };
@@ -72,7 +72,7 @@ describe('mixpanelMiddleware', () => {
             mixpanel: {
                 eventName: 'fooEvent',
                 props: {
-                  foo: 'bar',
+                    foo: 'bar',
                 },
             },
         },
@@ -82,11 +82,21 @@ describe('mixpanelMiddleware', () => {
         type: 'Action',
         meta: {
             mixpanel: {
-              eventName: 'fooEvent',
-              props: {
-                foo: 'bar',
-              },
-              increment: ['login'],
+                eventName: 'fooEvent',
+                props: {
+                    foo: 'bar',
+                },
+                increment: ['login'],
+            },
+        },
+    };
+
+    const mixpanelActionWithTypeOverride = {
+        type: 'Action',
+        meta: {
+            mixpanel: {
+                type: 'Better Action',
+                eventName: 'fooEvent',
             },
         },
     };
@@ -125,14 +135,17 @@ describe('mixpanelMiddleware', () => {
         assert(mixpanel.init.calledWith(mockToken));
     });
 
-    const store = { auth: {} };
+    const store = {auth: {}};
     let nextStub;
     let middleware;
 
     function runMiddleware(action, middlewareOptions) {
         nextStub = sandbox.stub();
-        middleware = mixpanelMiddleware(mockToken, {personSelector: selectors.getPerson, uniqueIdSelector: selectors.getUniqueId, ...middlewareOptions});
-        middleware({ getState: () => store })(nextStub)(action);
+        middleware = mixpanelMiddleware(mockToken, {
+            personSelector: selectors.getPerson,
+            uniqueIdSelector: selectors.getUniqueId, ...middlewareOptions
+        });
+        middleware({getState: () => store})(nextStub)(action);
         assert(nextStub.calledOnce);
         assert(nextStub.calledWith(action));
     }
@@ -165,6 +178,12 @@ describe('mixpanelMiddleware', () => {
             runMiddleware(mixpanelActionWithProps);
             assert(mixpanel.track.calledOnce);
             assert.equal(mixpanel.track.firstCall.args[1].foo, mixpanelActionWithProps.meta.mixpanel.props.foo);
+        });
+
+        it('tracks an action with action type override', () => {
+            runMiddleware(mixpanelActionWithTypeOverride);
+            assert(mixpanel.track.calledOnce);
+            assert.equal(mixpanel.track.firstCall.args[1].action, 'Better Action');
         });
 
         it('tracks an increment event with the provided values ', () => {
