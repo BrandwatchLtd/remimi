@@ -17,7 +17,6 @@ export default function mixpanelMiddleware(token, options = {}) {
         uniqueIdSelector,
         actionTypeFormatter = identity,
         propertyFormatter = identity,
-        eventPrefix = '',
     } = options;
 
     return store => next => action => {
@@ -25,9 +24,10 @@ export default function mixpanelMiddleware(token, options = {}) {
             type,
             meta: {
                 mixpanel: {
-                  eventName: eventName,
-                  props: mixpanelPayload,
-                  increment: increment,
+                    type: customType,
+                    eventName: eventName,
+                    props: mixpanelPayload,
+                    increment: increment,
                 } = {},
             } = {},
         } = action;
@@ -40,9 +40,9 @@ export default function mixpanelMiddleware(token, options = {}) {
             }
 
             const data = (typeof mixpanelPayload === 'object') ? mixpanelPayload : {};
-            mixpanel.track(`${eventPrefix}${actionTypeFormatter(eventName)}`, {
+            mixpanel.track(actionTypeFormatter(eventName), {
                 ...renameProperties(data, propertyFormatter),
-                action: actionTypeFormatter(type),
+                action: actionTypeFormatter(customType || type),
             });
         }
 

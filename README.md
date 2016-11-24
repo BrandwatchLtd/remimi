@@ -34,10 +34,10 @@ Middlewares requires unique identifier of an user, which is just standard id. Pr
 const uniqueIdSelector = state => state.me.id; // unique identifier
 const personSelector = state => state.me; // data passed down to mixpanel
 let store = createStore(
-  reducer, 
-  ['Initial State'], 
-  mixpanelMiddleware(token, { 
-    personSelector: personSelector, 
+  reducer,
+  ['Initial State'],
+  mixpanelMiddleware(token, {
+    personSelector: personSelector,
     uniqueIdSelector: uniqueIdSelectorm
   })
 );
@@ -96,14 +96,6 @@ mixpanelMiddleware(token, {actionTypeFormatter: value => `---${value}---`}); // 
 mixpanelMiddleware(token, {propertyFormatter: value => `---${value}---`}); // mixpanel custom properties will look like '---Action---'
 ```
 
-## Prefix event name
-
-Redux action types might be too generic and you might want to prefix name with the scope of the project.
-
-```
-mixpanelMiddleware(token, {eventPrefix: 'Batman - '}); // event will look 'Batman - Action'
-```  
-
 # Redux Actions
 
 ## Event
@@ -121,6 +113,25 @@ const action = {
         },
     },
 }
+```
+
+## Override Redux Action Type
+You can use this option in case the action type is not descriptive enough, or you are moving tracking across actions but already collected some data.
+
+```js
+const action = {
+    type: 'Login',
+    meta: {
+        mixpanel: {
+            eventName: 'Some event',
+            type: 'Login via API' // !!! this will take precedence over the Redux type
+            props: {
+                source: 'website',
+            },
+        },
+    },
+}
+
 ```
 
 ## Increment
@@ -168,4 +179,4 @@ Contributions are very appreciated and welcome. We promise you a prompt response
 # Credits
 Thanks to [Harry](https://twitter.com/hogg_io) and [Andy](https://twitter.com/andrew_polhill) for implementing the middleware! Kudos to them.
 
-:heart: :heart:  :heart: [Brandwatch](https://www.brandwatch.com/careers/) is looking for talented engineers in Brighton, Berlin and __Stuttgart__. :heart: :heart: :heart:  
+:heart: :heart:  :heart: [Brandwatch](https://www.brandwatch.com/careers/) is looking for talented engineers in Brighton, Berlin and __Stuttgart__. :heart: :heart: :heart:
