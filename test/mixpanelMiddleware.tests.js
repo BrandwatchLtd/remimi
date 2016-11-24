@@ -212,13 +212,6 @@ describe('mixpanelMiddleware', () => {
         });
     });
 
-    describe('prefix event', () => {
-        it('uses default identity formatter', function() {
-            runMiddleware(mixpanelActionWithProps, {eventPrefix: 'Batman - '});
-            assert.equal(mixpanel.track.firstCall.args[0], 'Batman - fooEvent');
-        });
-    });
-
     describe('middleware formatters', function() {
         describe('action type', function() {
             it('uses default identity formatter', function() {

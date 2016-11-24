@@ -34,10 +34,10 @@ Middlewares requires unique identifier of an user, which is just standard id. Pr
 const uniqueIdSelector = state => state.me.id; // unique identifier
 const personSelector = state => state.me; // data passed down to mixpanel
 let store = createStore(
-  reducer, 
-  ['Initial State'], 
-  mixpanelMiddleware(token, { 
-    personSelector: personSelector, 
+  reducer,
+  ['Initial State'],
+  mixpanelMiddleware(token, {
+    personSelector: personSelector,
     uniqueIdSelector: uniqueIdSelectorm
   })
 );
@@ -94,14 +94,6 @@ mixpanelMiddleware(token, {actionTypeFormatter: value => `---${value}---`}); // 
 
 ```
 mixpanelMiddleware(token, {propertyFormatter: value => `---${value}---`}); // mixpanel custom properties will look like '---Action---'
-```
-
-## Prefix event name
-
-Redux action types might be too generic and you might want to prefix name with the scope of the project.
-
-```
-mixpanelMiddleware(token, {eventPrefix: 'Batman - '}); // event will look 'Batman - Action'
 ```
 
 # Redux Actions
