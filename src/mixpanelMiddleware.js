@@ -26,6 +26,7 @@ export default function mixpanelMiddleware(token, options = {}) {
                 mixpanel: {
                     type: customType,
                     eventName: eventName,
+                    timeEvent: timeEvent,
                     props: mixpanelPayload,
                     increment: increment,
                 } = {},
@@ -44,6 +45,10 @@ export default function mixpanelMiddleware(token, options = {}) {
                 ...renameProperties(data, propertyFormatter),
                 action: actionTypeFormatter(customType || type),
             });
+        }
+
+        if (timeEvent && timeEvent.length > 0) {
+            mixpanel.time_event(timeEvent);
         }
 
         if (increment && increment.length > 0) {

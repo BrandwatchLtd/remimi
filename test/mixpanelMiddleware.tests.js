@@ -91,6 +91,19 @@ describe('mixpanelMiddleware', () => {
         },
     };
 
+    const mixpanelActionWithTimeEvent = {
+        type: 'Action',
+        meta: {
+            mixpanel: {
+                eventName: 'fooEvent',
+                timeEvent: 'barEvent',
+                props: {
+                    foo: 'bar',
+                },
+            },
+        },
+    };
+
     const mixpanelActionWithTypeOverride = {
         type: 'Action',
         meta: {
@@ -116,6 +129,7 @@ describe('mixpanelMiddleware', () => {
         sandbox = sinon.sandbox.create();
         sandbox.stub(mixpanel, 'init');
         sandbox.stub(mixpanel, 'track');
+        sandbox.stub(mixpanel, 'time_event');
         sandbox.stub(mixpanel, 'identify');
 
         // Mixpanel doesn't add the people object until it has initiated.
@@ -190,6 +204,12 @@ describe('mixpanelMiddleware', () => {
             runMiddleware(mixpanelActionWithIncrement);
             assert(mixpanel.people.increment.calledOnce);
             assert(mixpanel.people.increment.calledWith(mixpanelActionWithIncrement.meta.mixpanel.increment));
+        });
+
+        it('tracks timed event with the provided event name ', () => {
+            runMiddleware(mixpanelActionWithTimeEvent);
+            assert(mixpanel.time_event.calledOnce);
+            assert(mixpanel.time_event.calledWith(mixpanelActionWithTimeEvent.meta.mixpanel.timeEvent));
         });
 
         describe('with user data', () => {
