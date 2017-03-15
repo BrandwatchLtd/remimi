@@ -30,7 +30,7 @@ var renameProperties = function renameProperties(object, formatter) {
 function mixpanelMiddleware(token) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    _mixpanelBrowser2.default.init(token);
+    _mixpanelBrowser2.default.init(token, options.config);
 
     var personSelector = options.personSelector,
         uniqueIdSelector = options.uniqueIdSelector,
