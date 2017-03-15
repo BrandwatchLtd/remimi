@@ -149,6 +149,17 @@ describe('mixpanelMiddleware', () => {
         assert(mixpanel.init.calledWith(mockToken));
     });
 
+    it('initialises with the given config', () => {
+        const config = {
+            autotrack: false
+        };
+
+        mixpanelMiddleware(mockToken, { config });
+
+        assert(mixpanel.init.calledOnce);
+        assert(mixpanel.init.calledWith(mockToken));
+    });
+
     const store = {auth: {}};
     let nextStub;
     let middleware;

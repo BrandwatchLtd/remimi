@@ -10,7 +10,7 @@ const renameProperties = (object, formatter) => {
 };
 
 export default function mixpanelMiddleware(token, options = {}) {
-    mixpanel.init(token);
+    mixpanel.init(token, options.config);
 
     const {
         personSelector,
