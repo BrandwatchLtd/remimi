@@ -47,7 +47,7 @@ export default function mixpanelMiddleware(token, options = {}) {
             });
         }
 
-        if (timeEvent && timeEvent.length > 0) {
+        if (timeEvent) {
             mixpanel.time_event(timeEvent);
         }
 
