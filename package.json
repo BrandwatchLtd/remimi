@@ -1,6 +1,6 @@
 {
   "name": "remimi",
-  "version": "1.2.0",
+  "version": "0.0.0-development",
   "description": "Redux Mixpanel Middleware",
   "main": "dist/index.js",
   "scripts": {
@@ -8,11 +8,12 @@
     "test": "mocha --compilers js:babel-core/register -r jsdom-global/register",
     "lint": "eslint src/**",
     "ci": "npm run test && npm run lint",
-    "prepublish": "npm run test && npm run lint && npm run build"
+    "prepublish": "npm run test && npm run lint && npm run build",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BrandwatchLtd/remimi.git"
+    "url": "https://github.com/BrandwatchLtd/remimi.git"
   },
   "keywords": [
     "Redux.",
@@ -36,7 +37,8 @@
     "jsdom": "9.4.1",
     "jsdom-global": "2.0.0",
     "mocha": "2.5.3",
-    "sinon": "^1.17.5"
+    "sinon": "^1.17.5",
+    "semantic-release": "^6.3.6"
   },
   "dependencies": {
     "mixpanel-browser": "^2.8.1"
