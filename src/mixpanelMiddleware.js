@@ -10,7 +10,7 @@ const renameProperties = (object, formatter) => {
 };
 
 export default function mixpanelMiddleware(token, options = {}) {
-    mixpanel.init(token);
+    mixpanel.init(token, options.config);
 
     const {
         personSelector,
@@ -26,6 +26,7 @@ export default function mixpanelMiddleware(token, options = {}) {
                 mixpanel: {
                     type: customType,
                     eventName: eventName,
+                    timeEvent: timeEvent,
                     props: mixpanelPayload,
                     increment: increment,
                 } = {},
@@ -44,6 +45,10 @@ export default function mixpanelMiddleware(token, options = {}) {
                 ...renameProperties(data, propertyFormatter),
                 action: actionTypeFormatter(customType || type),
             });
+        }
+
+        if (timeEvent) {
+            mixpanel.time_event(timeEvent);
         }
 
         if (increment && increment.length > 0) {
