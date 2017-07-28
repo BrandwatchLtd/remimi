@@ -87,14 +87,20 @@ Mixpanel recommmend to use human names for action types and properties. You can 
 ## Action Types
 
 ```
-mixpanelMiddleware(token, {actionTypeFormatter: value => `---${value}---`}); // event will look like '---Action---'
+mixpanelMiddleware(token, {actionTypeFormatter: actionType => `---${actionType}---`}); // event will look like '---Action---'
 ```
 
 ## Properties and Increment name
 
 ```
-mixpanelMiddleware(token, {propertyFormatter: value => `---${value}---`}); // mixpanel custom properties will look like '---Action---'
+mixpanelMiddleware(token, {propertyFormatter: property => `---${property}---`}); // mixpanel custom properties will look like '---Property---'
 ```
+
+## Values
+```
+mixpanelMiddleware(token, {valueFormatter: value => `---${value}---`}); // mixpanel custom properties will look like '---Value---'
+```
+
 
 # Redux Actions
 

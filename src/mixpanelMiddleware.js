@@ -2,9 +2,9 @@ import mixpanel from 'mixpanel-browser';
 
 const identity = value => value;
 
-const renameProperties = (object, formatter) => {
+const renameEventData = (object, propFormatter, valFormatter) => {
     return Object.keys(object).reduce((memo, key) => {
-        memo[formatter(key)] = formatter(object[key]);
+        memo[propFormatter(key)] = valFormatter(object[key]);
         return memo;
     }, {})
 };
@@ -17,6 +17,7 @@ export default function mixpanelMiddleware(token, options = {}) {
         uniqueIdSelector,
         actionTypeFormatter = identity,
         propertyFormatter = identity,
+        valueFormatter = identity,
     } = options;
 
     return store => next => action => {
@@ -42,7 +43,7 @@ export default function mixpanelMiddleware(token, options = {}) {
 
             const data = (typeof mixpanelPayload === 'object') ? mixpanelPayload : {};
             mixpanel.track(actionTypeFormatter(eventName), {
-                ...renameProperties(data, propertyFormatter),
+                ...renameEventData(data, propertyFormatter, valueFormatter),
                 action: actionTypeFormatter(customType || type),
             });
         }
