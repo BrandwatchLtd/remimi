@@ -12,7 +12,6 @@ describe('mixpanelMiddleware', () => {
             const {
                 auth: {
                     user: {
-                        id,
                         username,
                         firstName,
                         lastName,
@@ -264,6 +263,20 @@ describe('mixpanelMiddleware', () => {
 
             it('formats all properties of payload', function() {
                 runMiddleware(mixpanelActionWithProps, {propertyFormatter: value => `===${value}===`});
+                assert.equal(mixpanel.track.firstCall.args[1]['===foo==='], 'bar');
+            });
+
+            it('formats all values of payload', function() {
+                runMiddleware(mixpanelActionWithProps, {valueFormatter: value => `===${value}===`});
+                assert.equal(mixpanel.track.firstCall.args[1]['foo'], '===bar===');
+            });
+
+            it('formats all properties and values of payload', function() {
+                runMiddleware(mixpanelActionWithProps, {
+                    propertyFormatter: value => `===${value}===`,
+                    valueFormatter: value => `===${value}===`
+                });
+
                 assert.equal(mixpanel.track.firstCall.args[1]['===foo==='], '===bar===');
             });
 
