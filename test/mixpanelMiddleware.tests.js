@@ -77,7 +77,7 @@ describe('mixpanelMiddleware', () => {
         },
     };
 
-    const mixpanelActionWithIncrement = {
+    const mixpanelActionWithIncrementArray = {
         type: 'Action',
         meta: {
             mixpanel: {
@@ -85,7 +85,36 @@ describe('mixpanelMiddleware', () => {
                 props: {
                     foo: 'bar',
                 },
-                increment: ['login'],
+                increment: ['login', 1],
+            },
+        },
+    };
+
+    const mixpanelActionWithIncrementObject = {
+        type: 'Action',
+        meta: {
+            mixpanel: {
+                eventName: 'fooEvent',
+                props: {
+                    foo: 'bar',
+                },
+                increment: {
+                    login: 1,
+                    logout: -1,
+                }
+            },
+        },
+    };
+
+    const mixpanelActionWithIncrementString = {
+        type: 'Action',
+        meta: {
+            mixpanel: {
+                eventName: 'fooEvent',
+                props: {
+                    foo: 'bar',
+                },
+                increment: 'login',
             },
         },
     };
@@ -210,10 +239,24 @@ describe('mixpanelMiddleware', () => {
             assert.equal(mixpanel.track.firstCall.args[1].action, 'Better Action');
         });
 
-        it('tracks an increment event with the provided values ', () => {
-            runMiddleware(mixpanelActionWithIncrement);
-            assert(mixpanel.people.increment.calledOnce);
-            assert(mixpanel.people.increment.calledWith(mixpanelActionWithIncrement.meta.mixpanel.increment));
+        describe('tracks an increment event with the provided values ', () => {
+            it('array', () => {
+                runMiddleware(mixpanelActionWithIncrementArray);
+                assert(mixpanel.people.increment.calledOnce);
+                assert(mixpanel.people.increment.calledWith(...mixpanelActionWithIncrementArray.meta.mixpanel.increment));
+            });
+
+            it('object', () => {
+                runMiddleware(mixpanelActionWithIncrementObject);
+                assert(mixpanel.people.increment.calledOnce);
+                assert(mixpanel.people.increment.calledWith(mixpanelActionWithIncrementObject.meta.mixpanel.increment));
+            });
+
+            it('object', () => {
+                runMiddleware(mixpanelActionWithIncrementString);
+                assert(mixpanel.people.increment.calledOnce);
+                assert(mixpanel.people.increment.calledWith(mixpanelActionWithIncrementString.meta.mixpanel.increment));
+            });
         });
 
         it('tracks timed event with the provided event name ', () => {
@@ -280,10 +323,27 @@ describe('mixpanelMiddleware', () => {
                 assert.equal(mixpanel.track.firstCall.args[1]['===foo==='], '===bar===');
             });
 
-            it('formats the increment name', function() {
-                runMiddleware(mixpanelActionWithIncrement, {propertyFormatter: value => `===${value}===`});
-                assert(mixpanel.people.increment.calledOnce);
-                assert(mixpanel.people.increment.calledWith('===login==='));
+            describe('formats the increment name', function() {
+                it('array', () => {
+                    runMiddleware(mixpanelActionWithIncrementArray, {propertyFormatter: value => `===${value}===`});
+                    assert(mixpanel.people.increment.calledOnce);
+                    assert(mixpanel.people.increment.calledWith('===login===', 1));
+                });
+
+                it('object', () => {
+                    runMiddleware(mixpanelActionWithIncrementObject, {propertyFormatter: value => `===${value}===`});
+                    assert(mixpanel.people.increment.calledOnce);
+                    assert(mixpanel.people.increment.calledWith({
+                        '===login===': 1,
+                        '===logout===': -1,
+                    }));
+                });
+
+                it('string', () => {
+                    runMiddleware(mixpanelActionWithIncrementString, {propertyFormatter: value => `===${value}===`});
+                    assert(mixpanel.people.increment.calledOnce);
+                    assert(mixpanel.people.increment.calledWith('===login==='));
+                });
             });
         });
     });

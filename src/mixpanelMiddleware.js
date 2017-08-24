@@ -52,7 +52,13 @@ export default function mixpanelMiddleware(token, options = {}) {
             mixpanel.time_event(timeEvent);
         }
 
-        if (increment && increment.length > 0) {
+        if (Array.isArray(increment)) {
+            mixpanel.people.increment(propertyFormatter(increment[0]), increment[1]);
+        } else if (increment === Object(increment)) {
+            mixpanel.people.increment(Object.keys(increment).reduce((inc, key) => ({ ...inc,
+                [propertyFormatter(key)]: increment[key],
+            }), {}));
+        } else if (increment) {
             mixpanel.people.increment(propertyFormatter(increment));
         }
 
