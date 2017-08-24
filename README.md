@@ -151,7 +151,9 @@ const action = {
    meta: {
      mixpanel: {
          eventName: 'Some event',
-         increment: ['login'],
+         increment: ['login', 1], // or
+         increment: {'login': 1, 'logout': 2}, // or
+         increment: 'login'
      },
    },
 }
