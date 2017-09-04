@@ -37,8 +37,8 @@
     "jsdom": "9.4.1",
     "jsdom-global": "2.0.0",
     "mocha": "2.5.3",
-    "sinon": "^1.17.5",
-    "semantic-release": "^6.3.6"
+    "semantic-release": "^6.3.6",
+    "sinon": "^3.2.1"
   },
   "dependencies": {
     "mixpanel-browser": "^2.8.1"
