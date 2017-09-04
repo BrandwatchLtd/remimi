@@ -34,6 +34,8 @@ export default function mixpanelMiddleware(token, options = {}) {
             } = {},
         } = action;
 
+        let result = next(action);
+
         if (eventName) {
             if (personSelector && uniqueIdSelector) {
                 const person = personSelector(store.getState());
@@ -62,6 +64,6 @@ export default function mixpanelMiddleware(token, options = {}) {
             mixpanel.people.increment(propertyFormatter(increment));
         }
 
-        return next(action);
+        return result;
     };
 }
