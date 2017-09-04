@@ -204,6 +204,10 @@ describe('mixpanelMiddleware', () => {
     }
 
     describe('middleware function', () => {
+        it('tracks actions after the next call', () => {
+            runMiddleware(mixpanelActionWithProps);
+            assert(nextStub.calledBefore(mixpanel.track));
+        });
 
         it('does not attempt to track an action with no meta', () => {
             runMiddleware(nonMixpanelAction);
