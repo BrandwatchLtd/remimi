@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "mocha": true,
-    "es6": true
+    "es6": true,
+    "node": true
   },
   "parserOptions": {
     "ecmaVersion": 6,
