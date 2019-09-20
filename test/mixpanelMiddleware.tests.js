@@ -1,7 +1,7 @@
-import assert from 'assert';
-import mixpanel from 'mixpanel-browser';
-import mixpanelMiddleware from '../src/';
-import sinon from 'sinon';
+const assert = require('assert');
+const mixpanel = require('mixpanel-browser');
+const mixpanelMiddleware = require('../src/');
+const sinon = require('sinon');
 
 describe('mixpanelMiddleware', () => {
     let sandbox;
