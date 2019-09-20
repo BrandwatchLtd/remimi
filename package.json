@@ -41,6 +41,6 @@
     "sinon": "^3.2.1"
   },
   "dependencies": {
-    "mixpanel-browser": "^2.16.0"
+    "mixpanel-browser": "^2.29.1"
   }
 }
