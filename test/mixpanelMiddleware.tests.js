@@ -300,6 +300,11 @@ describe('mixpanelMiddleware', () => {
                 runMiddleware(mixpanelActionWithProps, {actionTypeFormatter: value => `---${value}---`});
                 assert.equal(mixpanel.track.firstCall.args[0], '---fooEvent---');
             });
+
+            it('formats time event', function() {
+                runMiddleware(mixpanelActionWithTimeEvent, {actionTypeFormatter: value => `---${value}---`});
+                assert.equal(mixpanel.time_event.firstCall.args[0], '---barEvent---');
+            });
         });
 
         describe('properties', function() {
