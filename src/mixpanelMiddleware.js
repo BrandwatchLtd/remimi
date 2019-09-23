@@ -1,4 +1,4 @@
-const mixpanel = require('mixpanel-browser');
+import mixpanel from 'mixpanel-browser';
 
 const identity = value => value;
 
@@ -9,7 +9,7 @@ const renameEventData = (object, propFormatter, valFormatter) => {
     }, {})
 };
 
-module.exports = function mixpanelMiddleware(token, options = {}) {
+export default function mixpanelMiddleware(token, options = {}) {
     mixpanel.init(token, options.config);
 
     const {
