@@ -9,7 +9,7 @@
     "lint": "eslint src/**",
     "ci": "npm run test && npm run lint",
     "prepublish": "npm run test && npm run lint && npm run build",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
