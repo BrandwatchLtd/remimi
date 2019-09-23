@@ -1,6 +1,6 @@
 {
   "name": "remimi",
-  "version": "3.0.0",
+  "version": "0.0.0-development",
   "description": "Redux Mixpanel Middleware",
   "main": "dist/index.js",
   "scripts": {
