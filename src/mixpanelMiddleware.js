@@ -51,7 +51,7 @@ module.exports = function mixpanelMiddleware(token, options = {}) {
         }
 
         if (timeEvent) {
-            mixpanel.time_event(actionTypeFormatter(timeEvent));
+            mixpanel.time_event(timeEvent);
         }
 
         if (Array.isArray(increment)) {
