@@ -154,7 +154,7 @@ describe('mixpanelMiddleware', () => {
     };
 
     beforeEach(() => {
-        sandbox = sinon.createSandbox();
+        sandbox = sinon.sandbox.create();
         sandbox.stub(mixpanel, 'init');
         sandbox.stub(mixpanel, 'track');
         sandbox.stub(mixpanel, 'time_event');
