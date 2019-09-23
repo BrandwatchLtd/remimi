@@ -1,1 +1,1 @@
-module.exports = require('./mixpanelMiddleware');
+export { default as default } from './mixpanelMiddleware';
