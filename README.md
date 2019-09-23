@@ -6,13 +6,18 @@ Advanced Client Redux Mixpanel Middleware.
 
 # Installation
 
-`npm install --save remimi`
+`npm install --save @brandwatch/remimi`
+
+## Important
+**Since version 3 the package has moved to be under the `@brandwatch` scope,
+make sure to update any imports/requires to include the scope.
+The npm page can be found here: https://www.npmjs.com/package/@brandwatch/remimi
 
 # Basic Configuration
 
 ```js
 import { createStore } from 'redux';
-import mixpanelMiddleware from 'remimi';
+import mixpanelMiddleware from '@brandwatch/remimi';
 
 import reducer from './your-reducers';
 
