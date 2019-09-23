@@ -11,7 +11,7 @@ Advanced Client Redux Mixpanel Middleware.
 ## Important
 **Since version 3 the package has moved to be under the `@brandwatch` scope,
 make sure to update any imports/requires to include the scope.
-The npm page can be found here: https://www.npmjs.com/package/@brandwatch/remimi
+The npm page can be found here: https://www.npmjs.com/package/@brandwatch/remimi**
 
 # Basic Configuration
 
