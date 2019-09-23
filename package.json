@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BrandwatchLtd/remimi.git"
+    "url": "git+https://github.com/BrandwatchLtd/remimi.git"
   },
   "keywords": [
     "Redux.",
